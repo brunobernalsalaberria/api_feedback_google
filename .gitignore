@@ -1,0 +1,26 @@
+# Entornos virtuales
+venv/
+.env
+
+# Archivos de Python compilados
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de configuración o secretos
+*.json
+
+# Archivos de sistema / editores
+.DS_Store
+*.swp
+*.sublime-project
+*.sublime-workspace
+.idea/
+.vscode/
+
+# Carpetas de subida o temporales
+uploads/
+
+# Otros
+*.log

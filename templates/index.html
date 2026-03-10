@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Feedback AI</title>
+</head>
+
+<body>
+    <h2>Enviar reseña de texto</h2>
+
+    <form action="/analyze-text" method="post">
+        <textarea name="text" rows="5" cols="50"></textarea><br><br>
+        <button type="submit">Analizar</button>
+    </form>
+
+    <h2>Enviar reseña de audio</h2>
+                                    <!--sin esto no puedo subir los archivos-->
+    <form action="/analyze-audio" method="post" enctype="multipart/form-data">
+                                    <!--Permitir a los archivos wav y m4a-->
+        <input type="file" name="audio" accept=".wav, .m4a"><br><br>
+        <button type="submit">Analizar audio</button>
+    </form>
+
+    <h2>Enviar imagen del producto</h2>
+
+    <form action="/analyze-image" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*"><br><br>
+        <button type="submit">Analizar imagen</button>
+    </form>
+</body>
+
+</html>

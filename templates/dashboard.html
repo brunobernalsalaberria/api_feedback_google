@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard de Feedback</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+
+        h1,
+        h2 {
+            color: #333;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            background-color: #007BFF;
+            color: white;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Dashboard de Análisis de Feedback</h1>
+
+    <!-- entrada que se elija -->
+    <div class="card">
+        <h2>Tipo de entrada</h2>
+        <p><strong>{{ report.input.tipo }}</strong></p>
+    </div>
+
+    <!-- si es audio -->
+    {% if report.input.tipo in ["texto", "audio"] %}
+
+    <div class="card">
+        <h2>{% if report.input.tipo == "audio" %}Transcripción{% else %}Texto analizado{% endif %}</h2>
+        <p>
+            {% if report.input.tipo == "audio" %}
+            {{ report.transcripcion }}
+            {% else %}
+            {{ report.input.texto_original }}
+            {% endif %}
+        </p>
+    </div>
+
+    <!-- valores importantes -->
+    <div class="card">
+        <h2>Resumen ejecutivo</h2>
+        <p>
+            <strong>Sentimiento predominante:</strong>
+            <span class="badge">{{ report.sentimiento.polaridad }}</span>
+        </p>
+        <p><strong>Score:</strong> {{ report.sentimiento.score }}</p>
+        <p><strong>Intensidad emocional:</strong> {{ report.sentimiento.intensidad }}</p>
+    </div>
+
+    <!-- emociones -->
+    <div class="card">
+        <h2>Emociones detectadas</h2>
+        <ul>
+            {% for emocion in report.emociones %}
+            <li>{{ emocion }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- entidades que se detecten como productos -->
+    <div class="card">
+        <h2>Entidades identificadas</h2>
+
+        <p><strong>Producto:</strong></p>
+        <ul>
+            {% for p in report.entidades.producto %}
+            <li>{{ p }}</li>
+            {% else %}
+            <li>No detectado</li>
+            {% endfor %}
+        </ul>
+
+        <p><strong>Características:</strong></p>
+        <ul>
+            {% for c in report.entidades.caracteristicas %}
+            <li>{{ c }}</li>
+            {% else %}
+            <li>No detectadas</li>
+            {% endfor %}
+        </ul>
+
+        <p><strong>Problemas:</strong></p>
+        <ul>
+            {% for pr in report.entidades.problemas %}
+            <li>{{ pr }}</li>
+            {% else %}
+            <li>No detectados</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- categoria -->
+    <div class="card">
+        <h2>Categoría de la reseña</h2>
+        <p>{{ report.categoria }}</p>
+    </div>
+
+    <!-- recomendacion -->
+    <div class="card">
+        <h2>Recomendación automática</h2>
+        <p>{{ report.recomendacion }}</p>
+    </div>
+
+    {% endif %}
+
+    <!--imagenes -->
+    {% if report.input.tipo == "imagen" %}
+
+    <div class="card">
+        <h2>Emociones faciales detectadas</h2>
+        {% for face in report.faces %}
+        <ul>
+            <li>Alegría: {{ face.joy_likelihood }}</li>
+            <li>Enfado: {{ face.anger_likelihood }}</li>
+            <li>Sorpresa: {{ face.surprise_likelihood }}</li>
+            <li>Tristeza: {{ face.sorrow_likelihood }}</li>
+        </ul>
+        {% endfor %}
+    </div>
+
+    <div class="card">
+        <h2>Objetos detectados</h2>
+        <ul>
+            {% for obj in report.objects %}
+            <li>{{ obj.name }} ({{ obj.score }})</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% endif %}
+
+</body>
+
+</html>
