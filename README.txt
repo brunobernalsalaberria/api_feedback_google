@@ -1,114 +1,110 @@
-Sistema de Análisis Multimodal de Feedback
+# Sistema de Análisis Multimodal de Feedback
 
-Proyecto desarrollado en Python con Flask,
-permite analizar feedback de usuarios en texto, audio e imágenes,
-utilizando APIs de Google Cloud para interpretar texto, pasar de audio a texto y interpretar imágenes.
+Proyecto desarrollado en Python con Flask que permite analizar feedback de usuarios en texto, audio e imágenes, utilizando Cloud APIs de Google para interpretar texto, transcribir audio y analizar imágenes.
 
-El objetivo es visualizar un dashboard
-web mostrando información clave como sentimiento, emociones, entidades,
-transcripciones y detección visual.
+El objetivo es mostrar un dashboard web con información clave como sentimiento, emociones, entidades, transcripciones y detección visual.
 
-Funcionalidades
-1. Recepción Multimodal
+---
+
+## Funcionalidades
+
+### 1. Recepción Multimodal
 
 La aplicación acepta tres tipos de entrada:
 
-Texto: reseñas escritas por usuarios
+- Texto → reseñas escritas por usuarios  
+- Audio → archivos de voz (.wav, mono, 16kHz)  
+- Imagen → fotos con personas y objetos  
 
-Audio: archivos de voz (.wav, mono, 16kHz) Sino dará errores, 
-hay un enlace comentado de una página en la que puedes dar 
-esas caracteristicas a cualquier audio
+⚠️ Si el audio no cumple el formato dará error.  
+Hay un enlace comentado en el código para convertir audios al formato correcto.
 
-Imagen: fotos con personas y objetos
+---
 
-2. Procesamiento con APIs de Google Cloud
-Análisis de Texto (Google Natural Language API)
+### 2. Procesamiento con Cloud APIs de Google
 
-Sentimiento: positivo / negativo / neutral
+#### Análisis de Texto (Google Natural Language API)
 
-Intensidad emocional
+- Sentimiento: positivo / negativo / neutral  
+- Intensidad emocional  
+- Extracción de entidades:
+  - Productos
+  - Características
+  - Problemas
+- Categoría automática
+- Recomendación automática
 
-Extracción de entidades:
--Productos
--Características
--Problemas
+---
 
-Categoria automática de la reseña
+#### Audio → Texto (Google Speech-to-Text API)
 
-Recomendación automática
+- Transcripción automática
+- El texto transcrito se analiza con NLP
 
+⚠️ Requisitos del audio:
 
+- Formato `.wav`
+- 1 canal (mono)
+- Frecuencia recomendada: 16000 Hz
 
-Audio → Texto (Google Speech-to-Text)
+---
 
-Transcripción automática del audio
+#### Análisis de Imágenes (Google Vision API)
 
-El texto transcrito se analiza con NLP
+- Detección de rostros
+- Emociones faciales:
+  - alegría
+  - enfado
+  - sorpresa
+  - tristeza
+- Detección de objetos
+- Etiquetas de la imagen
 
-⚠️ Requisitos del audio ⚠️:
+---
 
-Formato .wav
+### 3. Dashboard Web
 
-1 canal (mono)
+El dashboard muestra los datos según el tipo de entrada.
 
-Frecuencia recomendada: 16000 Hz
+#### Resumen
 
+- Tipo de entrada
+- Sentimiento predominante
+- Score
+- Intensidad
 
+#### Análisis detallado
 
-Análisis de Imágenes (Google Vision API)
+- Emociones detectadas
+- Entidades extraídas
+- Categoría
+- Recomendación automática
 
-Detección de rostros
+---
 
-Análisis de emociones faciales (alegría, enfado, sorpresa, tristeza)
+## Tecnologías utilizadas
 
-Detección de objetos
+Backend:
+- Python
+- Flask
 
-Etiquetas de la imagen
+Frontend:
+- HTML
+- CSS
 
+Cloud APIs:
+- Google Natural Language API
+- Google Speech-to-Text API
+- Google Vision API
 
+Gestión de credenciales:
+- .env
 
-3. Dashboard Web
+---
 
-El dashboard muestra los datos según el tipo de entrada:
+## Estructura del proyecto
 
-Resumen de datos
-
-Tipo de entrada (texto / audio / imagen)
-
-Sentimiento predominante
-
-Score e intensidad
-
-
-Análisis Detallado
-
-Emociones detectadas
-
-Entidades extraídas
-
-Categoría de la reseña
-
-Recomendación automática
-
-
-
-Tecnologías Utilizadas
-
-Backend: Python, Flask
-
-Frontend: HTML + CSS
-
-APIs Cloud:
-
-Google Natural Language API
-
-Google Speech-to-Text API
-
-Google Vision API
-
-Gestión de credenciales: .env
-
-📂 Estructura del Proyecto
+```
 feedback_api_google/
 │
 ├── app.py
@@ -127,53 +123,73 @@ feedback_api_google/
 ├── .env
 ├── requirements.txt
 └── README.md
+```
 
-Configuración del Proyecto
+---
 
-Crear entorno virtual
+## Configuración del proyecto
+
+### Crear entorno virtual
+
+```
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-Instalar dependencias
+source venv/bin/activate
+# Windows:
+venv\Scripts\activate
+```
+
+### Instalar dependencias
+
+```
 pip install -r requirements.txt
-Configurar credenciales
+```
 
-Crear un archivo .env:
+### Configurar credenciales
 
+Crear archivo `.env`
+
+```
 GOOGLE_APPLICATION_CREDENTIALS=path/a/tu/credencial.json
+```
 
-Asegúrate de haber habilitado las APIs necesarias en Google Cloud Console.
+Asegúrate de habilitar las APIs en Google Cloud Console.
 
-Ejecución
+---
+
+## Ejecución
+
+```
 python app.py
+```
 
-Accede desde el navegador a:
+Abrir en el navegador:
 
+```
 http://127.0.0.1:5000
-Rutas Disponibles
+```
 
+---
+
+## Rutas disponibles
+
+```
 POST /analyze-text
-
 POST /analyze-audio
-
 POST /analyze-image
+```
 
-Cada una procesa el input y renderiza el dashboard con los resultados.
+Cada ruta procesa el input y muestra el dashboard.
 
+---
 
-Requisitos Cumplidos del Enunciado
+## Requisitos cumplidos
 
-Recepción multimodal
-
-Uso de mínimo 3 APIs cloud
-
-Análisis de sentimiento y emociones
-
-Transcripción de audio
-
-Análisis de imágenes (rostros y objetos)
-
-Extracción de información estructurada
-
-Dashboard visual
-
-Gestión de errores y credenciales
+- Recepción multimodal
+- Uso de 3 Cloud APIs
+- Análisis de sentimiento
+- Transcripción de audio
+- Análisis de imágenes
+- Extracción de información estructurada
+- Dashboard visual
+- Gestión de credenciales
+- Manejo de errores
